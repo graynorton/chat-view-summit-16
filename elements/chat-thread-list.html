@@ -19,21 +19,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <template>
 
+    <style>
+      paper-menu { padding: 0; }
+    </style>
+
     <paper-toolbar>
       <paper-icon-button icon="inbox" id="inbox"></paper-icon-button>
       <div class="title">Threads</div>
-      <paper-badge for="inbox" label="{{_computeUnreadCount(user.lastReadMessage.*, threads.*)}}"></paper-badge>
+      <paper-badge for="inbox" label="[[_unread]]" hidden$="[[!_unread]]">
+      </paper-badge>
     </paper-toolbar>
 
     <paper-menu selected="{{_selectedIndex}}">
-      <template is="dom-repeat" items="{{threads}}">
+      <template is="dom-repeat" items="[[threads]]">
         <paper-item>
           <paper-item-body two-line>
             <div>
-              <iron-icon icon="communication:textsms" hidden$="{{_computeThreadRead(item.messages.length, item.id, user.lastReadMessage.*)}}"></iron-icon>
-              <span>{{item.title}}</span>
+              <iron-icon icon="communication:textsms"
+                hidden$="[[_computeThreadRead(item.messages.length, item.id, user.lastReadMessage.*)]]">
+              </iron-icon>
+              <span>[[item.title]]</span>
             </div>
-            <div secondary>{{item.lastMessage}}</div>
+            <div secondary>[[_extractLastMessage(item, item.messages.length)]]</div>
           </paper-item-body>
         </paper-item>
       </template>
@@ -57,12 +64,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           observer: '_threadsChanged'
         },
 
+        selectedThread: {
+          notify: true
+        },
+
         _selectedIndex: {
           observer: '_selectedIndexChanged'
         },
 
-        selectedThread: {
-          notify: true
+        _unread: {
+          computed: '_computeUnreadCount(user.lastReadMessage.*, threads.*)'
         }
 
       },
@@ -83,6 +94,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _computeThreadRead: function(length, id, lastReadMessageInfo) {
         return length == lastReadMessageInfo.base[id];
+      },
+
+      _extractLastMessage: function(thread, length) {
+        return thread.messages[thread.messages.length - 1].text;
       }
 
     });

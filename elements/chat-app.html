@@ -24,13 +24,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <template>
 
-    <iron-ajax url="threads.json" last-response="{{threads}}" auto></iron-ajax>
+    <iron-ajax url="data.json" last-response="{{data}}" auto></iron-ajax>
 
     <paper-drawer-panel>
 
-      <chat-thread-list drawer user="{{user}}" threads="{{threads}}" selected-thread="{{selectedThread}}"></chat-thread-list>
+      <chat-thread-list drawer user="[[data.user]]" threads="[[data.threads]]" selected-thread="{{selectedThread}}"></chat-thread-list>
 
-      <chat-thread-view main user="{{user}}" thread="{{selectedThread}}"></chat-thread-view>
+      <chat-thread-view main user="{{data.user}}" thread="{{selectedThread}}"></chat-thread-view>
 
     </paper-drawer-panel>
   </template>
@@ -38,17 +38,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script>
     Polymer({
 
-      is: 'chat-view',
-
-      properties: {
-
-        user: {
-          value: function() {
-            return {name: 'Kevin', lastReadMessage: {}};
-          }
-        }
-
-      }
+      is: 'chat-view'
 
     });
   </script>

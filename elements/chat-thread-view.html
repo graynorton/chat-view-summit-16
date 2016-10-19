@@ -36,14 +36,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
 
-    <input-header label="{{thread.title}}"></input-header>
+    <input-header title="{{thread.title}}" icon="mail"></input-header>
 
     <div class="list">
-      <template is="dom-repeat" items="{{thread.messages}}">
+      <template is="dom-repeat" items="[[thread.messages]]">
         <paper-item>
           <paper-item-body two-line>
-            <div>{{item.user}}</div>
-            <div secondary>{{item.text}}</div>
+            <div>[[item.user]]</div>
+            <div secondary>[[item.text]]</div>
           </paper-item-body>
         </paper-item>
       </template>
@@ -82,7 +82,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             text: e.target.value,
             user: this.user.name
           });
-          this.set('thread.lastMessage', e.target.value);
           e.target.value = '';
         }
       }

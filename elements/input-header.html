@@ -12,7 +12,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <dom-module id="input-header">
 
   <template>
-
     <style>
       .dropdown-content {
         padding: 10px;
@@ -21,32 +20,38 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <paper-toolbar>
 
-      <paper-icon-button icon="mail"></paper-icon-button>
-
-      <div class="title">{{label}}</div>
+      <paper-icon-button icon="[[icon]]" hidden$="[[!icon]]"></paper-icon-button>
+      <div class="title">[[title]]</div>
 
       <paper-menu-button horizontal-align="right" vertical-align="top">
         <paper-icon-button icon="more-vert" class="dropdown-trigger"></paper-icon-button>
         <div class="dropdown-content">
-          <paper-input label="Thread name:" value="{{label}}"></paper-input>
+          <paper-input label="[[label]]" value="{{title}}"></paper-input>
         </div>
       </paper-menu-button>
-    </paper-toolbar>
 
+    </paper-toolbar>
   </template>
 
   <script>
     Polymer({
-
       is: 'input-header',
 
       properties: {
+        title: {
+          type: String,
+          notify: true
+        },
+
+        icon: {
+          type: String,
+          value: ''
+        },
 
         label: {
           type: String,
-          notify: true
+          value: 'Title:'
         }
-
       }
 
     });
