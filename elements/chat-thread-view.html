@@ -1,5 +1,5 @@
 <!--
-Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+Copyright (c) 2015-16 The Polymer Project Authors. All rights reserved.
 This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
 The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
 The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
@@ -8,16 +8,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../components/polymer/polymer.html">
-<link rel="import" href="../components/paper-toolbar/paper-toolbar.html">
-<link rel="import" href="../components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../components/paper-menu-button/paper-menu-button.html">
-<link rel="import" href="../components/iron-icons/iron-icons.html">
 <link rel="import" href="../components/paper-input/paper-input.html">
 <link rel="import" href="../components/paper-item/paper-item.html">
 <link rel="import" href="../components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../components/paper-item/paper-item-body.html">
 
-<link rel="import" href="input-header.html">
+<link rel="import" href="../elements/input-header.html">
 
 <dom-module id="chat-thread-view">
 
@@ -36,7 +32,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
 
-    <input-header title="{{thread.title}}" icon="mail"></input-header>
+    <input-header label="[[thread.title]]" on-input="_updateTitle"></input-header>
 
     <div class="list">
       <template is="dom-repeat" items="[[thread.messages]]">
@@ -66,24 +62,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       },
 
-      observers: [
-
-        '_updateLastReadMessage(thread.id, thread.messages.length, user)'
-
-      ],
-
-      _updateLastReadMessage: function(id, length, user) {
-        this.set(['user.lastReadMessage', id], length);
-      },
-
       _handleInput: function(e) {
         if (e.keyCode == 13) {
-          this.push('thread.messages', {
-            text: e.target.value,
-            user: this.user.name
+          this.fire('post', {
+              threadId: this.thread.id,
+              user: this.user.name,
+              text: e.target.value
           });
           e.target.value = '';
         }
+      },
+
+      _updateTitle: function (e) {
+          this.fire('set-thread-title', {
+              threadId: this.thread.id,
+              title: e.target.value
+          });
       }
 
     });
