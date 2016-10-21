@@ -9,32 +9,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../components/polymer/polymer.html">
 <link rel="import" href="../components/paper-drawer-panel/paper-drawer-panel.html">
-<link rel="import" href="../components/iron-ajax/iron-ajax.html">
 <link rel="import" href="./chat-thread-list.html">
 <link rel="import" href="./chat-thread-view.html">
 
+<link rel="import" href="../data/store.html">
+
 <dom-module id="chat-view">
 
+  <style>
+    :host {
+      font-family: 'Muli', 'Helvetica Neue', helvetica, arial;
+      display: block;
+    }
+  </style>
+
   <template>
-
-    <style>
-      :host {
-        font-family: 'Muli', 'Helvetica Neue', helvetica, arial;
-        display: block;
-      }
-    </style>
-
-    <iron-ajax url="./data.json" last-response="{{data}}" auto></iron-ajax>
 
     <paper-drawer-panel>
 
       <chat-thread-list drawer unread="[[unread]]" threads="[[threads]]"
-        selected-thread="[[selectedThread]]" on-select-thread="_onSelectThread"></chat-thread-list>
+        selected-thread="[[selectedThread]]" on-select-thread="_selectThread"></chat-thread-list>
 
-      <chat-thread-view main user="[[user]]" thread="[[selectedThread]]" on-post="_onPost" on-set-thread-title="_onSetThreadTitle"></chat-thread-view>
+      <chat-thread-view main user="[[user]]" thread="[[selectedThread]]" on-post="_post" on-set-thread-title="_setThreadTitle"></chat-thread-view>
 
     </paper-drawer-panel>
-
   </template>
 
   <script>
@@ -42,87 +40,48 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       is: 'chat-view',
 
+      behaviors: [ChatView.StoreBehavior],
+
       properties: {
 
-        user: Object,
+        user: {
+          statePath: 'user'
+        },
 
-        threads: Array,
+        threads: {
+            statePath: function (state) {
+                return ChatView.select.threads(state);
+            }
+        },
 
-        selectedThread: Object,
+        selectedThread: {
+            statePath: function (state) {
+                return ChatView.select.selectedThread(state);
+            }
+        },
 
-        unread: Number
+        unread: {
+            statePath: function (state) {
+                return ChatView.select.unread(state);
+            }
+        }
 
       },
 
-      observers: [
-        '_init(data)'
-      ],
-
-      _onSelectThread: function (evt) {
-          const id = evt.detail.id;
-          const thread = this.data.threads[id];
-          if (thread) {
-              this.data.selectedThreadId = evt.detail.id;
-              this._markThreadRead(id, thread);
-          }
-          this._update(this.data);
+      _selectThread: function (evt) {
+          this.dispatch(ChatView.act.selectThread(evt.detail.id));
       },
 
-      _onSetThreadTitle: function (evt) {
+      _setThreadTitle: function (evt) {
           const d = evt.detail;
-          const id = d.threadId;
-          const thread = this.data.threads[id];
-          if (thread) {
-              this.data.threads[id].title = d.title;
-          }
-          this._update(this.data);
+          this.dispatch(ChatView.act.setThreadTitle(d.threadId, d.title));
       },
 
-      _onPost: function (evt) {
+      _post: function (evt) {
           const d = evt.detail;
-          const id = d.threadId;
-          const thread = this.data.threads[id];
-          if (thread) {
-              thread.messages.push({
-                  user: d.user,
-                  text: d.text
-              });
-              if (id === this.data.selectedThreadId) {
-                this._markThreadRead(id, thread);
-              }
-          }
-          this._update(this.data);
-      },
-
-      _markThreadRead: function (id, thread) {
-          this.data.user.lastReadMessage[id] = thread.messages.length - 1;
-      },
-
-      _init: function (data) {
-          this._onSelectThread({detail: {id: 0}});
-      },
-
-      _update: function (data) {
-          const threads = data.threads;
-          const user = data.user;
-          let unread = 0;
-          this.threads = threads.map(function (thread) {
-            const messages = thread.messages.slice();
-            const last = messages.length - 1;
-            let lastRead = user.lastReadMessage[thread.id];
-            if (lastRead === undefined) lastRead = -1;
-            const unreadMsgs = last - lastRead;
-            unread += Boolean(unreadMsgs);
-            return Object.assign({}, thread, {
-                messages: messages,
-                lastMessage: messages[last].text,
-                unread: unreadMsgs
-            });
-          });
-          this.selectedThread = this.threads[this.data.selectedThreadId];
-          this.unread = unread;
-          this.user = user;
+          this.dispatch(ChatView.act.post(d.threadId, d.user, d.text));
       }
+
     });
   </script>
 

@@ -1,0 +1,28 @@
+<script src="../node_modules/redux/dist/redux.js"></script>
+<script src="../node_modules/reselect/dist/reselect.js"></script>
+
+<script src="./store.js"></script>
+
+<link rel="import" href="../components/polymer-redux/polymer-redux.html">
+
+<script>
+
+    // ChatView namespace
+
+    window.ChatView = window.ChatView || {};
+
+    // behavior
+
+    ChatView.StoreBehavior = PolymerRedux(store);
+
+    // load data
+
+    const req = new XMLHttpRequest();
+
+    req.addEventListener('load', function () {
+        store.dispatch(ChatView.act.load(JSON.parse(this.responseText)));
+    });
+
+    req.open('GET', '/data/data.json');
+    req.send();
+</script>
