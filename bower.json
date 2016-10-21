@@ -1,5 +1,5 @@
 {
-  "name": "chat-app-paper",
+  "name": "chat-view-summit-16",
   "private": true,
   "authors": [
     "The Polymer Authors"
@@ -17,6 +17,7 @@
     "paper-item": "PolymerElements/paper-item#^1.0.0",
     "iron-flex-layout": "PolymerElements/iron-flex-layout#^1.0.0",
     "paper-input": "PolymerElements/paper-input#^1.0.0",
-    "paper-menu-button": "PolymerElements/paper-menu-button#^1.0.0"
+    "paper-menu-button": "PolymerElements/paper-menu-button#^1.0.0",
+    "polymer-redux": "^0.1.0"
   }
 }
