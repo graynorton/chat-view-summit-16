@@ -67,20 +67,22 @@ data flow in [Polymer](https://www.polymer-project.org):
 
 * **centralized**: All mutations occur in **&lt;chat-view&gt;**, flowing down to
   **&lt;chat-thread-list&gt;** and **&lt;chat-thread-view&gt;** via one-way
-  bindings. Actions are conveyed upward via standard DOM events.
+  bindings. Actions are conveyed upward via standard DOM events. *(This version is
+  also on the master branch of the repository.)*
 
 * **redux**: In this centralized version, the model is managed in a
   [Redux](https://github.com/reactjs/redux) store. The store is bound to the
   **&lt;chat-view&gt;** component using the
   **[polymer-redux](https://github.com/tur-nr/polymer-redux)** library.
 
-* **redux-mono**: A variation of the **redux** version, in which there is still
-  a single, centralized store, but it's bound directly to the
-  **&lt;chat-thread-list&gt;** and **&lt;chat-thread-view&gt;** components, rather
-  than to the top-level **&lt;chat-view&gt;** component. There's no good reason to
-  do this in such a simple app, but it illustrates that choosing a centralized /
-  unidirectional approach doesn't necessarily mean flowing every change from the
-  top of your component hierarchy to the bottom.
-
-* **master**: The master branch currently contains the vanilla **centralized**
-  version of the app.
+* **redux-mono**: In this variation on the **redux** version, instead of binding
+  the store directly to **&lt;chat-view&gt;** or one of its child components, we
+  bind it to a dedicated **&lt;chat-view-store&gt;** component that can be included
+  *within* any app component that needs access to the store. (This is an example of
+  the [monostate pattern](), because while multiple instances of
+  **&lt;chat-view-store&gt;** may exist, they are all backed by a single instance
+  of the store.) Although there's no good reason to do so in such a simple app, we
+  include an instance of **&lt;chat-view-store&gt;** in **&lt;chat-thread-list&gt;**
+  and another in **&lt;chat-thread-view&gt;** to show that choosing a centralized /
+  unidirectional approach doesn't necessarily mean flowing every change from the top
+  of your component hierarchy to the bottom.
