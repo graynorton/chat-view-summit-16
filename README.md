@@ -51,7 +51,7 @@ data flow in [Polymer](https://www.polymer-project.org):
 * **Centralized | Unidirectional**: The app's model is centralized; all
   mutations occur in one place, with notifications flowing in only one direction –
   down the component hiearchy. Components deeper in the hierarchy are responsible
-  ony for rendering views and capturing user interacactions. Information
+  only for rendering views and capturing user interacactions. Information
   about these interactions is conveyed via messages – **actions** in
   [Flux](https://facebook.github.io/flux/) / [Redux](https://github.com/reactjs/redux)
   parlance - to the centralized keeper of the model, which makes the corresponding
@@ -63,12 +63,12 @@ data flow in [Polymer](https://www.polymer-project.org):
   Polymer Summit 2015, the **&lt;chat-thread-list&gt;** and
   **&lt;chat-thread-view&gt;** components are responsible for mutating the model
   in response to user actions. Two-way bindings and complex observers are used to
-  propagate notifications of mutations between components and respond to them.
+  propagate notifications of mutations between components, and to react to these
+  notifications.
 
 * **centralized**: All mutations occur in **&lt;chat-view&gt;**, flowing down to
   **&lt;chat-thread-list&gt;** and **&lt;chat-thread-view&gt;** via one-way
-  bindings. Actions are conveyed upward via standard DOM events. *(This version is
-  also on the master branch of the repository.)*
+  bindings. Actions are conveyed upward via standard DOM events.
 
 * **redux**: In this centralized version, the model is managed in a
   [Redux](https://github.com/reactjs/redux) store. The store is bound to the
