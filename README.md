@@ -11,7 +11,7 @@ If you have questions or comments, please reach out to me on
 I'm happy to discuss!
 
 > As of today (Oct 21, 2016), the files in this repo are still
-> under-commented, and I'd also like to add some additional Information
+> under-commented. I'd also like to add some additional information
 > to this README, but I'm pushing to GitHub so that people can begin
 > exploring. I'll try to flesh out the details soon.
 
@@ -79,7 +79,7 @@ data flow in [Polymer](https://www.polymer-project.org):
   the store directly to **&lt;chat-view&gt;** or one of its child components, we
   bind it to a dedicated **&lt;chat-view-store&gt;** component that can be included
   *within* any app component that needs access to the store. (This is an example of
-  the [monostate pattern](), because while multiple instances of
+  the **monostate pattern**, because while multiple instances of
   **&lt;chat-view-store&gt;** may exist, they are all backed by a single instance
   of the store.) Although there's no good reason to do so in such a simple app, we
   include an instance of **&lt;chat-view-store&gt;** in **&lt;chat-thread-list&gt;**
