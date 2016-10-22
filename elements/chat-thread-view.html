@@ -15,6 +15,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../elements/input-header.html">
 
+<link rel="import" href="../data/chat-view-store.html">
+
 <dom-module id="chat-thread-view">
 
   <template>
@@ -31,6 +33,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         padding: 10px;
       }
     </style>
+
+    <chat-view-store id="store" selected-thread="{{thread}}" user="{{user}}"></chat-view-store>
 
     <input-header label="[[thread.title]]" on-input="_updateTitle"></input-header>
 
@@ -64,7 +68,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _handleInput: function(e) {
         if (e.keyCode == 13) {
-          this.fire('post', {
+          this.$.store.post({
               threadId: this.thread.id,
               user: this.user.name,
               text: e.target.value
@@ -74,7 +78,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _updateTitle: function (e) {
-          this.fire('set-thread-title', {
+          this.$.store.setThreadTitle({
               threadId: this.thread.id,
               title: e.target.value
           });

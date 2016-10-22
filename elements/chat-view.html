@@ -1,5 +1,5 @@
 <!--
-Copyright (c) 2015-16 The Polymer Project Authors. All rights reserved.
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
 This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
 The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
 The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
@@ -27,10 +27,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <paper-drawer-panel>
 
-      <chat-thread-list drawer unread="[[unread]]" threads="[[threads]]"
-        selected-thread="[[selectedThread]]" on-select-thread="_selectThread"></chat-thread-list>
+      <chat-thread-list drawer></chat-thread-list>
 
-      <chat-thread-view main user="[[user]]" thread="[[selectedThread]]" on-post="_post" on-set-thread-title="_setThreadTitle"></chat-thread-view>
+      <chat-thread-view main></chat-thread-view>
 
     </paper-drawer-panel>
   </template>
@@ -38,49 +37,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script>
     Polymer({
 
-      is: 'chat-view',
-
-      behaviors: [ChatView.StoreBehavior],
-
-      properties: {
-
-        user: {
-          statePath: 'user'
-        },
-
-        threads: {
-            statePath: function (state) {
-                return ChatView.select.threads(state);
-            }
-        },
-
-        selectedThread: {
-            statePath: function (state) {
-                return ChatView.select.selectedThread(state);
-            }
-        },
-
-        unread: {
-            statePath: function (state) {
-                return ChatView.select.unread(state);
-            }
-        }
-
-      },
-
-      _selectThread: function (evt) {
-          this.dispatch(ChatView.act.selectThread(evt.detail.id));
-      },
-
-      _setThreadTitle: function (evt) {
-          const d = evt.detail;
-          this.dispatch(ChatView.act.setThreadTitle(d.threadId, d.title));
-      },
-
-      _post: function (evt) {
-          const d = evt.detail;
-          this.dispatch(ChatView.act.post(d.threadId, d.user, d.text));
-      }
+      is: 'chat-view'
 
     });
   </script>

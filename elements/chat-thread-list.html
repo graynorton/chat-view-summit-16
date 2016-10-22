@@ -15,6 +15,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../components/iron-icons/communication-icons.html">
 <link rel="import" href="../components/paper-badge/paper-badge.html">
 
+<link rel="import" href="../data/chat-view-store.html">
+
 <dom-module id="chat-thread-list">
 
   <template>
@@ -22,6 +24,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <style>
       paper-item[selected] { font-weight: bold; }
     </style>
+
+    <chat-view-store id="store" threads={{threads}} unread="{{unread}}" selected-thread="{{selectedThread}}"></chat-view-store>
 
     <paper-toolbar>
       <paper-icon-button icon="inbox" id="inbox"></paper-icon-button>
@@ -59,7 +63,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _selectThread: function (evt) {
-        this.fire('select-thread', { id: evt.model.item.id });
+        this.$.store.selectThread({ id: evt.model.item.id });
       },
 
       _isSelected: function (thread) {
